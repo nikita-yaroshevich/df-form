@@ -1,0 +1,27 @@
+{
+  "name": "df-form",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "nikita.yaroshevich",
+      "email": "nikita.yaroshevich@gmail.com"
+    }
+  ],
+  "main": ["dist/df-form.js"],
+  "ignore": [
+    "src",
+    "test",
+    "gulpfile.js",
+    "karma-*.conf.js",
+    "**/.*"
+  ],
+  "dependencies": {
+    "df.validator":"git@github.com:nikita-yaroshevich/df-validator.git"
+    },
+  "devDependencies": {
+    "angular-mocks": ">=1.2.0",
+    "angular-scenario": ">=1.2.0",
+    "angular": ">=1.2.0",
+    "angular-sanitize": ">=1.2.0"
+  }
+}
