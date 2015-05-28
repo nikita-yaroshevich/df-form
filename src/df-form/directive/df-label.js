@@ -12,6 +12,6 @@ angular.module('df.form.directive')
         tooltip: '@',
         forAttr: '@for'
       },
-      templateUrl: 'formBundle/templates/df-label.html'
+      templateUrl: 'df.form/templates/df-label.html'
     };
   });

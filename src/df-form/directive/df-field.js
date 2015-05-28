@@ -10,7 +10,7 @@ angular.module('df.form.directive')
       transclude: true,
       require: ['^?form', 'dfField'],
       scope: false,
-      templateUrl: 'formBundle/templates/df-field.html',
+      templateUrl: 'df.form/templates/df-field.html',
       compile: function () {
         return {
           post: function (scope, element, attrs, ctrls, transclude) {
@@ -36,7 +36,7 @@ angular.module('df.form.directive')
           });
           //add label
           if ($attrs.label){
-            var template = $interpolate($templateCache.get('formBundle/templates/df-field-label.html'))({label: $attrs.label, tooltip: $attrs.tooltip, required: $attrs.required, fid: fid, name: name});
+            var template = $interpolate($templateCache.get('df.form/templates/df-field-label.html'))({label: $attrs.label, tooltip: $attrs.tooltip, required: $attrs.required, fid: fid, name: name});
             $compile(angular.element(template))($scope, function(labelElement, scope){
               angular.element($element).prepend(labelElement);
             });

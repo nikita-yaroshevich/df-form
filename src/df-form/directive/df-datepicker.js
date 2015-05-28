@@ -18,7 +18,7 @@ angular.module('df.form.directive')
         minDate: '=?',
         maxDate: '=?'
       },
-      templateUrl: 'formBundle/templates/df-datepicker.html',
+      templateUrl: 'df.form/templates/df-datepicker.html',
       compile: function (element, attr) {
         if (angular.isUndefined(attr.fid)) {
           attr.fid = dfFormUtils.nextUid();

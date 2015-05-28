@@ -9,7 +9,7 @@ angular.module('df.form.directive')
       require: ['^ngModel', '^?form', '^?dfField'],
       transclude: true,
       controllerAs: 'vm',
-      templateUrl: 'formBundle/templates/df-selectbox.html',
+      templateUrl: 'df.form/templates/df-selectbox.html',
       scope: {
         value: '=ngModel',
         filter: '=?filter',

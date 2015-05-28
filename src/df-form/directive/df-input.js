@@ -18,9 +18,9 @@ angular.module('df.form.directive')
         inputValue: '@?'
       },
       templateUrl: function (element, attrs) {
-        return attrs.hasOwnProperty('textarea') && attrs.textarea !== 'false' ? 'formBundle/templates/df-textarea.html' : 'formBundle/templates/df-input.html';
+        return attrs.hasOwnProperty('textarea') && attrs.textarea !== 'false' ? 'df.form/templates/df-textarea.html' : 'df.form/templates/df-input.html';
       },
-      //templateUrl: 'formBundle/templates/df-input.html',
+      //templateUrl: 'df.form/templates/df-input.html',
       compile: function (element, attr) {
         if (angular.isUndefined(attr.fid)) {
           attr.fid = dfFormUtils.nextUid();

@@ -7,6 +7,8 @@ var path = require('path');
 var plumber = require('gulp-plumber');
 var runSequence = require('run-sequence');
 var jshint = require('gulp-jshint');
+var angularTemplatecache = require('gulp-angular-templatecache');
+var stylus = require('gulp-stylus');
 
 /**
  * File patterns
@@ -14,6 +16,9 @@ var jshint = require('gulp-jshint');
 
 // Root directory
 var rootDirectory = path.resolve('./');
+
+var themesDirectory = path.join(rootDirectory, './src/themes');
+var enabledThemes = ['default'];
 
 // Source directory for build process
 var sourceDirectory = path.join(rootDirectory, './src');
@@ -42,11 +47,29 @@ gulp.task('build', function() {
     .pipe(gulp.dest('./dist'));
 });
 
+gulp.task('build-themes', function(){
+  for (var i = 0; i < enabledThemes.length; i++){
+    gulp.src([themesDirectory+'/'+enabledThemes[i]+'/'+enabledThemes[i]+'.styl'])
+      .pipe(stylus())
+      .pipe(gulp.dest('./dist/'));
+
+    gulp.src([themesDirectory+'/'+enabledThemes[i]+'/**/*.html'])
+      .pipe(angularTemplatecache({
+        standalone: true,
+        module: 'df-form.theme',
+        filename: enabledThemes[i]+'.theme.js',
+        minify: {}
+//        root: '../'
+      }))
+      .pipe(gulp.dest('./dist/'));
+  }
+});
+
 /**
  * Process
  */
 gulp.task('process-all', function (done) {
-  runSequence(/*'jshint',*/ 'test-src', 'build', done);
+  runSequence(/*'jshint',*/ 'test-src', 'build', 'build-themes', done);
 });
 
 /**

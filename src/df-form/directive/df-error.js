@@ -8,7 +8,7 @@ angular.module('df.form.directive')
       restrict: 'EA',
       require: ['^?form', '^?ngModel'],
       scope: true,
-      templateUrl: 'formBundle/templates/df-error.html',
+      templateUrl: 'df.form/templates/df-error.html',
       compile: function () {
         return {
           post: function post(scope, element, attrs, ctrl) {

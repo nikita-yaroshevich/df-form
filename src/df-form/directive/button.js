@@ -18,7 +18,7 @@ angular.module('df.form.directive')
                 ngDisabled: '='
             },
             templateUrl: function (element, attr) {
-                return attr.icon ? 'formBundle/templates/df-icon-button.html' : 'formBundle/templates/df-button.html';
+                return attr.icon ? 'df.form/templates/df-icon-button.html' : 'df.form/templates/df-button.html';
             },
             link: function (scope, element, attrs, formCtrl) {
                 scope.iconSize = scope.iconSize || 24;

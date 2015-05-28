@@ -44,7 +44,7 @@ angular.module('df.form.directive')
                 ngDisabled: '='
             },
             templateUrl: function (element, attr) {
-                return attr.icon ? 'formBundle/templates/df-icon-button.html' : 'formBundle/templates/df-button.html';
+                return attr.icon ? 'df.form/templates/df-icon-button.html' : 'df.form/templates/df-button.html';
             },
             link: function (scope, element, attrs, formCtrl) {
                 scope.iconSize = scope.iconSize || 24;
@@ -105,7 +105,7 @@ angular.module('df.form.directive')
         minDate: '=?',
         maxDate: '=?'
       },
-      templateUrl: 'formBundle/templates/df-datepicker.html',
+      templateUrl: 'df.form/templates/df-datepicker.html',
       compile: function (element, attr) {
         if (angular.isUndefined(attr.fid)) {
           attr.fid = dfFormUtils.nextUid();
@@ -162,7 +162,7 @@ angular.module('df.form.directive')
       restrict: 'EA',
       require: ['^?form', '^?ngModel'],
       scope: true,
-      templateUrl: 'formBundle/templates/df-error.html',
+      templateUrl: 'df.form/templates/df-error.html',
       compile: function () {
         return {
           post: function post(scope, element, attrs, ctrl) {
@@ -227,7 +227,7 @@ angular.module('df.form.directive')
       transclude: true,
       require: ['^?form', 'dfField'],
       scope: false,
-      templateUrl: 'formBundle/templates/df-field.html',
+      templateUrl: 'df.form/templates/df-field.html',
       compile: function () {
         return {
           post: function (scope, element, attrs, ctrls, transclude) {
@@ -253,7 +253,7 @@ angular.module('df.form.directive')
           });
           //add label
           if ($attrs.label){
-            var template = $interpolate($templateCache.get('formBundle/templates/df-field-label.html'))({label: $attrs.label, tooltip: $attrs.tooltip, required: $attrs.required, fid: fid, name: name});
+            var template = $interpolate($templateCache.get('df.form/templates/df-field-label.html'))({label: $attrs.label, tooltip: $attrs.tooltip, required: $attrs.required, fid: fid, name: name});
             $compile(angular.element(template))($scope, function(labelElement, scope){
               angular.element($element).prepend(labelElement);
             });
@@ -300,9 +300,9 @@ angular.module('df.form.directive')
         inputValue: '@?'
       },
       templateUrl: function (element, attrs) {
-        return attrs.hasOwnProperty('textarea') && attrs.textarea !== 'false' ? 'formBundle/templates/df-textarea.html' : 'formBundle/templates/df-input.html';
+        return attrs.hasOwnProperty('textarea') && attrs.textarea !== 'false' ? 'df.form/templates/df-textarea.html' : 'df.form/templates/df-input.html';
       },
-      //templateUrl: 'formBundle/templates/df-input.html',
+      //templateUrl: 'df.form/templates/df-input.html',
       compile: function (element, attr) {
         if (angular.isUndefined(attr.fid)) {
           attr.fid = dfFormUtils.nextUid();
@@ -369,7 +369,7 @@ angular.module('df.form.directive')
         tooltip: '@',
         forAttr: '@for'
       },
-      templateUrl: 'formBundle/templates/df-label.html'
+      templateUrl: 'df.form/templates/df-label.html'
     };
   });
 /**
@@ -417,7 +417,7 @@ angular.module('df.form.directive')
         name: '@?',
         tabindex: '@?'
       },
-      templateUrl: 'formBundle/templates/df-select.html',
+      templateUrl: 'df.form/templates/df-select.html',
       link: function(scope, element, attrs, ctrl) {
         var dfField = ctrl[2];
         var ngModel = ctrl[0];
@@ -468,7 +468,7 @@ angular.module('df.form.directive')
       require: ['^ngModel', '^?form', '^?dfField'],
       transclude: true,
       controllerAs: 'vm',
-      templateUrl: 'formBundle/templates/df-selectbox.html',
+      templateUrl: 'df.form/templates/df-selectbox.html',
       scope: {
         value: '=ngModel',
         filter: '=?filter',

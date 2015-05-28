@@ -16,7 +16,7 @@ angular.module('df.form.directive')
         name: '@?',
         tabindex: '@?'
       },
-      templateUrl: 'formBundle/templates/df-select.html',
+      templateUrl: 'df.form/templates/df-select.html',
       link: function(scope, element, attrs, ctrl) {
         var dfField = ctrl[2];
         var ngModel = ctrl[0];
