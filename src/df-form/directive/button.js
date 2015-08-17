@@ -37,6 +37,9 @@ angular.module('df.form.directive')
                 if (scope.$eval(attrs.primary)) {
                     scope.buttonClass.push('lgreen');
                 }
+                if (scope.$eval(attrs.turquoise)) {
+                  scope.buttonClass.push('turquoise');
+                }
                 if (scope.$eval(attrs.warn)) {
                     scope.buttonClass.push('red');
                 }

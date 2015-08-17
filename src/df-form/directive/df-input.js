@@ -3,19 +3,21 @@
  */
 
 angular.module('df.form.directive')
-  .directive('dfInput', function (dfFormUtils, $parse, $compile, validator, $q) {
+  .directive('dfInput', function (dfFormUtils, $parse, $compile, validator, $q, $interpolate, $templateCache) {
     return {
       restrict: 'EA',
       require: ['^ngModel', '^?form', '^?dfField'],
       scope: {
         fid: '@?fid',
-        value: '=ngModel',
+        ngModel: '=',
         type: '@?',
         //isDisabled: '=ngDisabled',
         tabindex: '@?',
         placeholder: '@?',
         symbol: '@?',
-        inputValue: '@?'
+        inputValue: '@?',
+        onFocus:'&',
+        onBlur:'&'
       },
       templateUrl: function (element, attrs) {
         return attrs.hasOwnProperty('textarea') && attrs.textarea !== 'false' ? 'df.form/templates/df-textarea.html' : 'df.form/templates/df-input.html';
@@ -36,20 +38,7 @@ angular.module('df.form.directive')
             var type = attrs.type || 'text';
             scope.textarea = attrs.hasOwnProperty('textarea') && attrs.textarea !== 'false';
             if (!scope.textarea) {
-              var inputVal = '';
-              if (scope.inputValue) {
-                inputVal = 'value="'+scope.inputValue+'"';
-              }
-              var inputHtml = '<input id="{{::fid}}" ' +
-                'type="' + type + '"' +
-                'ng-class="{symbol: symbol}" ' +
-                'tabindex="{{::tabIndex}}" ' +
-                'placeholder="{{::placeholder}}" ' +
-                inputVal +
-                'ng-model="value" ' +
-                'ng-model-options="{ updateOn: \'default blur\', debounce: {\'default\': 500, \'blur\': 0} }" ' +
-                'ng-disabled="isDisabled()" ' +
-                'ng-change="onValueChanged()"/>';
+              var inputHtml = $interpolate($templateCache.get('df.form/templates/df-input.element.html'))(angular.extend({},{type:type},scope));
 
               $compile(angular.element(inputHtml))(scope, function (clonedElement, scope) {
                 angular.element(element).append(clonedElement);

@@ -1,6 +1,3 @@
-/**
- * Created by Artyom on 2/13/2015.
- */
 
 angular.module('df.form.directive')
   .directive('dfSelectbox', function (dfFormUtils, $timeout, $parse) {
@@ -112,8 +109,22 @@ angular.module('df.form.directive')
 
           angular.forEach(vm.itemsList, function (item, key) {
             var value = angular.element(item).scope().getItemValue();
-            if (tmpValue.indexOf(value) !== -1) {
-              selectItem(item);
+            if (angular.isArray(value)){
+              value = value.toString();
+              if (value == tmpValue.toString()){
+                selectItem(item);
+              } else {
+                for (var i = 0; i < tmpValue.length; i++){
+                  if (value == tmpValue[i].toString()){
+                    selectItem(item);
+                    return;
+                  }
+                }
+              }
+            } else {
+              if (tmpValue.indexOf(value) !== -1) {
+                selectItem(item);
+              }
             }
           });
           vm.updateLabel();
@@ -126,12 +137,12 @@ angular.module('df.form.directive')
           //} else {
           //  selectItem(idx, value, itemsLabelList[idx]);
           //}
-        });
+        }, true);
 
         var clickHandler = function (e) {
           var $element = angular.element(e.target);
           var targetId = $element.attr('id');
-          var isMulti = $scope.view.type === 'multi';
+          var isMulti = false;//;$scope.view.type === 'multi';
           if (targetId === $scope.view.instanceId || (isInside($element) && isMulti)) {
             return false;
           }
@@ -224,7 +235,23 @@ angular.module('df.form.directive')
         }
 
         this.isItemSelected = function (el) {
-          return _.findWhere($scope.selectedItems, {value: angular.element(el).scope().getItemValue()});
+          var value = angular.element(el).scope().getItemValue().toString();
+          if (angular.isArray(value)){
+            var selectedElement = null;
+            //value = value.toString();
+            angular.forEach($scope.selectedItems, function(item){
+              if (value == item.value.toString()){
+                selectedElement = item;
+                return;
+              }
+            });
+            return selectedElement === null ? undefined : selectedElement;
+          }
+          //value = value.toString();
+          //return _.find($scope.selectedItems, function(val){
+          //  return val.toString() === value;
+          //});
+          return _.findWhere($scope.selectedItems, {value: value});
         };
 
         this.toggleList = function () {
@@ -380,8 +407,12 @@ angular.module('df.form.directive')
           index = index || elementScope.getItemIndex();
           vm.itemsList[index] = el;
 
-
-          if (undefined !== value && [].concat($scope.value).indexOf(value) !== -1) {
+          if (undefined !== value &&
+            (
+              (!angular.isArray(value) && [].concat($scope.value).indexOf(value) !== -1) ||
+              (angular.isArray(value) && [].concat($scope.value).toString() === value.toString())
+            )
+          ) {
             var selectedItem = this.isItemSelected(el);
             if (selectedItem) {
               if (selectedItem.element && angular.element(selectedItem.element).parent().length !== 0) {
@@ -465,7 +496,8 @@ angular.module('df.form.directive')
 
         scope.getItemValue = function () {
           try{
-            return scope.$eval(attrs.value) || attrs.value;
+            var value = scope.$eval(attrs.value);
+            return value !== undefined ? value : attrs.value;
           } catch (e){
             return attrs.value;
           }

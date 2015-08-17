@@ -25,7 +25,7 @@ angular.module('df.form.directive')
               if (ngmodel.$invalid) {
                 if (ngmodel.$dirty) {
                   error = true;
-                } else if (ngmodel.$modelValue !== ('' || undefined) && ngmodel.$modelValue.length !== 0) {
+                } else if (['', undefined, null].indexOf(ngmodel.$modelValue) === -1 && ngmodel.$modelValue.length !== 0) {
                   error = true;
                 }
               }

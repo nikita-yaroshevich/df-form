@@ -1,0 +1,12 @@
+<input id="{{::fid}}"
+                type="{{::type}}"
+                ng-class="{symbol: symbol, 'form-control': true}"
+                tabindex="{{::tabIndex}}"
+                placeholder="{{::placeholder}}"
+                value="{{::inputVal}}"
+                ng-model="ngModel"
+                ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur':0} }"
+                ng-disabled="isDisabled()"
+                ng-focus="onFocus({$event:$event})"
+                ng-blur="onBlur({$event:$event})"
+                ng-change="onValueChanged()"/>

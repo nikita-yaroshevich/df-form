@@ -36,7 +36,7 @@ angular.module('df.form.directive')
           });
           //add label
           if ($attrs.label){
-            var template = $interpolate($templateCache.get('df.form/templates/df-field-label.html'))({label: $attrs.label, tooltip: $attrs.tooltip, required: $attrs.required, fid: fid, name: name});
+            var template = $interpolate($templateCache.get('df.form/templates/df-field-label.html'))({label: $attrs.label, tooltip: $attrs.tooltip, tooltipPosition: $attrs.tooltipPosition, required: $attrs.required, fid: fid, name: name});
             $compile(angular.element(template))($scope, function(labelElement, scope){
               angular.element($element).prepend(labelElement);
             });

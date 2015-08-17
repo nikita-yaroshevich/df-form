@@ -56,7 +56,7 @@ gulp.task('build-themes', function(){
     gulp.src([themesDirectory+'/'+enabledThemes[i]+'/**/*.html'])
       .pipe(angularTemplatecache({
         standalone: true,
-        module: 'df-form.theme',
+        module: 'df.form.theme',
         filename: enabledThemes[i]+'.theme.js',
         minify: {}
 //        root: '../'

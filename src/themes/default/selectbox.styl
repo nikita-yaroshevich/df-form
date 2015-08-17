@@ -1,0 +1,232 @@
+.pp-selectbox {
+  outline: 0;
+
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+
+  &.h-none .pp-selectbox__list {
+    max-height: none
+  }
+
+  select-item {
+    display: block;
+  }
+
+  option-item {
+    display: block;
+    padding: 3px 3px 1px 11px;
+    border-bottom: 1px solid;
+    border-color: #000;
+    cursor: default;
+
+    &:hover {
+      background-color: #727f88;
+      color: #fff;
+      cursor: pointer;
+    }
+  }
+
+  &__wrapper {
+    position: relative;
+    background-color: #fff;
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    /* simple select */
+    .item-selected {
+      padding: 8px 18px 7px 7px;
+      box-sizing: border-box;
+      border-radius: 3px;
+      color: #fff;
+      background: #727f88;
+      font: 300 14px / 1.2 ;
+      cursor: pointer;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      right: 7px;
+      margin-top: -8.5px;
+      font: 600 14px / 1.2 ;
+      -moz-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+      -webkit-transform: rotate(90deg);
+      -o-transform: rotate(90deg);
+      transform: rotate(90deg);
+    }
+
+    /* multiple select */
+    .tags-selected {
+      resetMP();
+      clearfix();
+      list-style-type: none;
+      min-height: 31px;
+      border-radius: 3px;
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.26);
+      background: transparent;
+      font-size: 0;
+      position: relative;
+
+      .placeholder {
+        display: block;
+        color: #757b81;
+        font-size: 14px;
+        position: absolute;
+        top: 7px;
+        left: 10px;
+      }
+
+      .icon {
+        position: absolute;
+        top: 6px;
+        right: 7px;
+        color: #58595b;
+        font-size: 18px;
+      }
+
+      .tag {
+        position: relative;
+        float: left;
+        margin: 3px;
+        padding: 3px 15px 3px 3px;
+        border-radius: 3px;
+        box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        background: #727f88;
+        color: #fff;
+        font: 300 14px/1.2;
+        min-width: 70px;
+        max-width: 20%;
+        font-size: 14px;
+        text-align: left;
+        cursor: default;
+      }
+
+      .tag-close {
+        position: absolute;
+        right: 3px;
+        top: 0;
+        cursor: pointer;
+
+        &:hover {
+          color: #000
+        }
+      }
+
+      .tag-input {
+
+        input {
+          padding: 0 10px;
+          box-shadow: none;
+          background: transparent;
+          font: 300 14px / 31px ;
+          color: #000;
+        }
+      }
+    }
+  }
+
+  /* dropdown */
+  &__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    min-width: 100%;
+    background: #f8f5f8;
+  }
+
+  /* search */
+  &__search {
+    resetMP();
+    width: 100%;
+    input {
+      width: 100%;
+      height: 100%;
+      border: 1px solid;
+      border-color: #000;
+      border-radius: 7px;
+
+    }
+  }
+
+  /* list */
+  &__list {
+    resetMP();
+    list-style-type: none;
+    min-width: 100%;
+    max-height: 120px;
+    overflow: auto;
+    box-sizing: border-box;
+    box-shadow: 0 3px 15px 5px rgba(0, 0, 0, .1);
+
+    .sub {
+      .sub-item {
+        padding-left: 30px
+      }
+      .sub-title {
+        border-top: none
+      }
+    }
+
+    .sub-item,
+    .sub-title {
+      resetMP();
+      margin-top: 1px;
+      padding: 7px;
+      /*border-top: #646464 solid 1px;*/
+      color: #000;
+      background: #efefef;
+      font: 300 14px / 1.2 ;
+    }
+
+    .sub-title {
+      font-weight: bold
+    }
+
+    .sub-item {
+      display: block;
+      cursor: pointer;
+      padding-right: 24px;
+      white-space: nowrap;
+
+      &:first-child {
+        /*border-top: none*/
+        position: relative;
+        overflow: hidden;
+        margin-top: 0;
+
+        &:after {
+          content: '';
+          position: absolute;
+          z-index: 0;
+          top: 0;
+          left: 5%;
+          width: 90%;
+          height: 0;
+          box-shadow: 0 1px 10px 2px #969696;
+        }
+        span {
+          position: relative;
+          z-index: 1;
+        }
+      }
+
+      &.selected,
+      &:hover {
+        color: #fff;
+        background: #008ac0;
+      }
+    }
+  }
+}

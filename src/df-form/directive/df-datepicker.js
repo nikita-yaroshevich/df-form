@@ -3,7 +3,7 @@
  */
 
 angular.module('df.form.directive')
-  .directive('dfDatepicker', function (dfFormUtils, $parse, validator, $q) {
+  .directive('dfDatepicker', function (dfFormUtils, $parse, validator, $q, $timeout) {
     return {
       restrict: 'EA',
       require: ['^ngModel', '^?form', '^?dfField'],
@@ -55,7 +55,18 @@ angular.module('df.form.directive')
             };
 
             var dfField = ctrls[2];
+            var ngForm = ctrls[1];
             var ngModel = ctrls[0];
+            scope.$watch('value', function(val, oldVal){
+              if (val && val == oldVal){
+                scope.$applyAsync(function(){
+                  return ngForm[scope.name] && ngForm[scope.name].$setPristine();
+                });
+              }
+
+            });
+
+
             if (dfField){
               dfField.onWidgetAdded(scope.fid, ngModel.$name, 'dfDatepicker');
             }

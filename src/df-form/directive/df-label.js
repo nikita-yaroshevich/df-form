@@ -5,13 +5,15 @@ angular.module('df.form.directive')
   .directive('dfLabel', function () {
     return {
       restrict: 'E',
-      require: '^form',
+      require: '^?form',
       scope: {
         required: '@',
         label: '@',
         tooltip: '@',
+        tooltipPosition: '@',
         forAttr: '@for'
       },
-      templateUrl: 'df.form/templates/df-label.html'
+      templateUrl: 'df.form/templates/df-label.html',
+      link: function (scope, element, attrs) {}
     };
   });

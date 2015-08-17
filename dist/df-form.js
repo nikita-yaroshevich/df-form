@@ -63,6 +63,9 @@ angular.module('df.form.directive')
                 if (scope.$eval(attrs.primary)) {
                     scope.buttonClass.push('lgreen');
                 }
+                if (scope.$eval(attrs.turquoise)) {
+                  scope.buttonClass.push('turquoise');
+                }
                 if (scope.$eval(attrs.warn)) {
                     scope.buttonClass.push('red');
                 }
@@ -85,12 +88,13 @@ angular.module('df.form.directive')
             }
         };
     });
+
 /**
  * Created by nikita on 12/29/14.
  */
 
 angular.module('df.form.directive')
-  .directive('dfDatepicker', function (dfFormUtils, $parse, validator, $q) {
+  .directive('dfDatepicker', function (dfFormUtils, $parse, validator, $q, $timeout) {
     return {
       restrict: 'EA',
       require: ['^ngModel', '^?form', '^?dfField'],
@@ -142,7 +146,18 @@ angular.module('df.form.directive')
             };
 
             var dfField = ctrls[2];
+            var ngForm = ctrls[1];
             var ngModel = ctrls[0];
+            scope.$watch('value', function(val, oldVal){
+              if (val && val == oldVal){
+                scope.$applyAsync(function(){
+                  return ngForm[scope.name] && ngForm[scope.name].$setPristine();
+                });
+              }
+
+            });
+
+
             if (dfField){
               dfField.onWidgetAdded(scope.fid, ngModel.$name, 'dfDatepicker');
             }
@@ -152,6 +167,7 @@ angular.module('df.form.directive')
       }
     };
   });
+
 /**
  * Created by nikita on 12/29/14.
  */
@@ -179,7 +195,7 @@ angular.module('df.form.directive')
               if (ngmodel.$invalid) {
                 if (ngmodel.$dirty) {
                   error = true;
-                } else if (ngmodel.$modelValue !== ('' || undefined) && ngmodel.$modelValue.length !== 0) {
+                } else if (['', undefined, null].indexOf(ngmodel.$modelValue) === -1 && ngmodel.$modelValue.length !== 0) {
                   error = true;
                 }
               }
@@ -215,6 +231,7 @@ angular.module('df.form.directive')
       }
     };
   });
+
 /**
  * Created by Artyom on 2/16/2015.
  */
@@ -253,7 +270,7 @@ angular.module('df.form.directive')
           });
           //add label
           if ($attrs.label){
-            var template = $interpolate($templateCache.get('df.form/templates/df-field-label.html'))({label: $attrs.label, tooltip: $attrs.tooltip, required: $attrs.required, fid: fid, name: name});
+            var template = $interpolate($templateCache.get('df.form/templates/df-field-label.html'))({label: $attrs.label, tooltip: $attrs.tooltip, tooltipPosition: $attrs.tooltipPosition, required: $attrs.required, fid: fid, name: name});
             $compile(angular.element(template))($scope, function(labelElement, scope){
               angular.element($element).prepend(labelElement);
             });
@@ -264,6 +281,7 @@ angular.module('df.form.directive')
       }
     };
   });
+
 /**
  * Created by nikita on 12/29/14.
  */
@@ -280,24 +298,27 @@ angular.module('df.form.directive')
             }
         };
     });
+
 /**
  * Created by nikita on 12/29/14.
  */
 
 angular.module('df.form.directive')
-  .directive('dfInput', function (dfFormUtils, $parse, $compile, validator, $q) {
+  .directive('dfInput', function (dfFormUtils, $parse, $compile, validator, $q, $interpolate, $templateCache) {
     return {
       restrict: 'EA',
       require: ['^ngModel', '^?form', '^?dfField'],
       scope: {
         fid: '@?fid',
-        value: '=ngModel',
+        ngModel: '=',
         type: '@?',
         //isDisabled: '=ngDisabled',
         tabindex: '@?',
         placeholder: '@?',
         symbol: '@?',
-        inputValue: '@?'
+        inputValue: '@?',
+        onFocus:'&',
+        onBlur:'&'
       },
       templateUrl: function (element, attrs) {
         return attrs.hasOwnProperty('textarea') && attrs.textarea !== 'false' ? 'df.form/templates/df-textarea.html' : 'df.form/templates/df-input.html';
@@ -318,20 +339,7 @@ angular.module('df.form.directive')
             var type = attrs.type || 'text';
             scope.textarea = attrs.hasOwnProperty('textarea') && attrs.textarea !== 'false';
             if (!scope.textarea) {
-              var inputVal = '';
-              if (scope.inputValue) {
-                inputVal = 'value="'+scope.inputValue+'"';
-              }
-              var inputHtml = '<input id="{{::fid}}" ' +
-                'type="' + type + '"' +
-                'ng-class="{symbol: symbol}" ' +
-                'tabindex="{{::tabIndex}}" ' +
-                'placeholder="{{::placeholder}}" ' +
-                inputVal +
-                'ng-model="value" ' +
-                'ng-model-options="{ updateOn: \'default blur\', debounce: {\'default\': 500, \'blur\': 0} }" ' +
-                'ng-disabled="isDisabled()" ' +
-                'ng-change="onValueChanged()"/>';
+              var inputHtml = $interpolate($templateCache.get('df.form/templates/df-input.element.html'))(angular.extend({},{type:type},scope));
 
               $compile(angular.element(inputHtml))(scope, function (clonedElement, scope) {
                 angular.element(element).append(clonedElement);
@@ -355,6 +363,7 @@ angular.module('df.form.directive')
       }
     };
   });
+
 /**
  * Created by Artyom on 2/12/2015.
  */
@@ -362,16 +371,19 @@ angular.module('df.form.directive')
   .directive('dfLabel', function () {
     return {
       restrict: 'E',
-      require: '^form',
+      require: '^?form',
       scope: {
         required: '@',
         label: '@',
         tooltip: '@',
+        tooltipPosition: '@',
         forAttr: '@for'
       },
-      templateUrl: 'df.form/templates/df-label.html'
+      templateUrl: 'df.form/templates/df-label.html',
+      link: function (scope, element, attrs) {}
     };
   });
+
 /**
  * Created by nikita on 12/29/14.
  */
@@ -399,6 +411,7 @@ angular.module('df.form.directive')
       }
     };
   });
+
 /**
  * Created by Artyom on 2/13/2015.
  */
@@ -457,9 +470,7 @@ angular.module('df.form.directive')
 //      }
     };
   });
-/**
- * Created by Artyom on 2/13/2015.
- */
+
 
 angular.module('df.form.directive')
   .directive('dfSelectbox', function (dfFormUtils, $timeout, $parse) {
@@ -571,8 +582,22 @@ angular.module('df.form.directive')
 
           angular.forEach(vm.itemsList, function (item, key) {
             var value = angular.element(item).scope().getItemValue();
-            if (tmpValue.indexOf(value) !== -1) {
-              selectItem(item);
+            if (angular.isArray(value)){
+              value = value.toString();
+              if (value == tmpValue.toString()){
+                selectItem(item);
+              } else {
+                for (var i = 0; i < tmpValue.length; i++){
+                  if (value == tmpValue[i].toString()){
+                    selectItem(item);
+                    return;
+                  }
+                }
+              }
+            } else {
+              if (tmpValue.indexOf(value) !== -1) {
+                selectItem(item);
+              }
             }
           });
           vm.updateLabel();
@@ -585,12 +610,12 @@ angular.module('df.form.directive')
           //} else {
           //  selectItem(idx, value, itemsLabelList[idx]);
           //}
-        });
+        }, true);
 
         var clickHandler = function (e) {
           var $element = angular.element(e.target);
           var targetId = $element.attr('id');
-          var isMulti = $scope.view.type === 'multi';
+          var isMulti = false;//;$scope.view.type === 'multi';
           if (targetId === $scope.view.instanceId || (isInside($element) && isMulti)) {
             return false;
           }
@@ -683,7 +708,23 @@ angular.module('df.form.directive')
         }
 
         this.isItemSelected = function (el) {
-          return _.findWhere($scope.selectedItems, {value: angular.element(el).scope().getItemValue()});
+          var value = angular.element(el).scope().getItemValue().toString();
+          if (angular.isArray(value)){
+            var selectedElement = null;
+            //value = value.toString();
+            angular.forEach($scope.selectedItems, function(item){
+              if (value == item.value.toString()){
+                selectedElement = item;
+                return;
+              }
+            });
+            return selectedElement === null ? undefined : selectedElement;
+          }
+          //value = value.toString();
+          //return _.find($scope.selectedItems, function(val){
+          //  return val.toString() === value;
+          //});
+          return _.findWhere($scope.selectedItems, {value: value});
         };
 
         this.toggleList = function () {
@@ -839,8 +880,12 @@ angular.module('df.form.directive')
           index = index || elementScope.getItemIndex();
           vm.itemsList[index] = el;
 
-
-          if (undefined !== value && [].concat($scope.value).indexOf(value) !== -1) {
+          if (undefined !== value &&
+            (
+              (!angular.isArray(value) && [].concat($scope.value).indexOf(value) !== -1) ||
+              (angular.isArray(value) && [].concat($scope.value).toString() === value.toString())
+            )
+          ) {
             var selectedItem = this.isItemSelected(el);
             if (selectedItem) {
               if (selectedItem.element && angular.element(selectedItem.element).parent().length !== 0) {
@@ -924,7 +969,8 @@ angular.module('df.form.directive')
 
         scope.getItemValue = function () {
           try{
-            return scope.$eval(attrs.value) || attrs.value;
+            var value = scope.$eval(attrs.value);
+            return value !== undefined ? value : attrs.value;
           } catch (e){
             return attrs.value;
           }
@@ -958,6 +1004,37 @@ angular.module('df.form.directive')
       }
     };
   });
+
+/**
+ * Created by Artyom on 2/12/2015.
+ */
+angular.module('df.form.directive')
+  .directive('dfValidationGroup', function () {
+    return {
+      restrict: 'A',
+      require: ['^form', '^ngModel'],
+      link: function (scope, element, attrs, ctrls) {
+        var ngForm = ctrls[0];
+        var ngModel = ctrls[1];
+        //todo allow arrays
+        var groupName = attrs.dfValidationGroup;
+        if (!groupName){
+          return;
+        }
+        ngForm.$validationGroups = ngForm.$validationGroups || {};
+        ngForm.$validationGroups[groupName] = ngForm.$validationGroups[groupName] || [];
+        ngForm.$validationGroups[groupName].push(ngModel);
+
+        ngModel.$validationGroup = groupName;
+        scope.$on('$destroy', function(){
+          console.log('todo remove from ngForm.validationGroups[groupName]');
+          //todo remove from ngForm.validationGroups[groupName]
+        });
+      }
+
+    };
+  });
+
 /**
  * Created by nikita on 12/29/14.
  */
@@ -1004,8 +1081,9 @@ angular.module('df.form.directive')
             var context = ngForm && ngForm.object ? ngForm.object : ngModel;
             if (ngModel.isDisabled && ngModel.isDisabled()){
               delete ngModel.$errorMessages[validatorName];
-              return $q.resolve();
+              return $q.when();
             }
+            options = attrs[key];
             var result;
             try {
               result = validator.validate(viewValue, context, scope.$eval(options));
@@ -1017,7 +1095,7 @@ angular.module('df.form.directive')
             if (isPromiseLike(result)) {
               return result.then(function(){
                 delete ngModel.$errorMessages[validatorName];
-                return $q.resolve();
+                return $q.when();
               }).catch(function(e){
                 ngModel.$errorMessages[validatorName] = e.toString();
                 return $q.reject(e.toString());
@@ -1026,7 +1104,7 @@ angular.module('df.form.directive')
 
             if (result){
               delete ngModel.$errorMessages[validatorName];
-              return $q.resolve();
+              return $q.when();
             } else {
               ngModel.$errorMessages[validatorName] = result.toString();
               return $q.reject();
@@ -1037,6 +1115,7 @@ angular.module('df.form.directive')
       }
     };
   });
+
 /**
  * Created by nikita on 12/29/14.
  */
@@ -1059,6 +1138,7 @@ angular.module('df.form.directive')
       }
     };
   });
+
 /**
  * Created by nikita
  */
@@ -1185,7 +1265,7 @@ angular.module('df.form.directive')
 
 'use strict';
 angular.module('df.validator')
-  .service('defaultValidationRules', function ($interpolate, $q, moment, $filter, $parse, ppEntityManager) {
+  .service('defaultValidationRules', function ($interpolate, $q, $filter, $parse) {
     function invalid(value, object, options) {
       var msg = options.message ? options.message : this.message;
       msg = $interpolate(msg)(angular.extend({value: value, object: object}, options));
@@ -1309,6 +1389,19 @@ angular.module('df.validator')
           return options.rule(value, object, options);
         }
       },
+      email:{
+        message: 'Invalid email address',
+        validate: function(value, context, options){
+          options = angular.isObject(options) ? options : {rule: options};
+          var emailRe = /^([\w\-_+]+(?:\.[\w\-_+]+)*)@((?:[\w\-]+\.)*\w[\w\-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+          value += '';
+            if ( ! emailRe.test(value) ) return invalid.apply(this, [value, context, options]);
+            if ( /\@.*\@/.test(value) ) return invalid.apply(this, [value, context, options]);
+            if ( /\@.*_/.test(value) ) return invalid.apply(this, [value, context, options]);
+
+            return true;
+        }
+      },
       lessThan: {
         message: 'This field should be less than {{errorField}}',
         validate: function (value, context, options) {
@@ -1343,30 +1436,6 @@ angular.module('df.validator')
           }
           return true;
 
-        }
-      },
-      dateDiff: {
-        message: 'Invalid Date diff',
-        validate: function (value, object, options) {
-          if (!options.rule) {
-            return;
-          }
-
-          var date = moment(value);
-          var compareDate = moment(options.rule.field ? (object[options.rule.field].$modelValue || object[options.rule.field]): options.rule.date);
-
-          options.rule.range = options.rule.range || 0;
-          options.rule.term = options.rule.term || 'days';
-          if (options.rule.more){
-            if (date.diff(compareDate, options.rule.term) < options.rule.range) {
-              return invalid.apply(this, [value, object, options]);
-            }
-          } else {
-            if (date.diff(compareDate, options.rule.term) > options.rule.range) {
-              return invalid.apply(this, [value, object, options]);
-            }
-          }
-          return true;
         }
       }
     };

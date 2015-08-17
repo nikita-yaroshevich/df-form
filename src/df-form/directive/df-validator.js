@@ -44,8 +44,9 @@ angular.module('df.form.directive')
             var context = ngForm && ngForm.object ? ngForm.object : ngModel;
             if (ngModel.isDisabled && ngModel.isDisabled()){
               delete ngModel.$errorMessages[validatorName];
-              return $q.resolve();
+              return $q.when();
             }
+            options = attrs[key];
             var result;
             try {
               result = validator.validate(viewValue, context, scope.$eval(options));
@@ -57,7 +58,7 @@ angular.module('df.form.directive')
             if (isPromiseLike(result)) {
               return result.then(function(){
                 delete ngModel.$errorMessages[validatorName];
-                return $q.resolve();
+                return $q.when();
               }).catch(function(e){
                 ngModel.$errorMessages[validatorName] = e.toString();
                 return $q.reject(e.toString());
@@ -66,7 +67,7 @@ angular.module('df.form.directive')
 
             if (result){
               delete ngModel.$errorMessages[validatorName];
-              return $q.resolve();
+              return $q.when();
             } else {
               ngModel.$errorMessages[validatorName] = result.toString();
               return $q.reject();

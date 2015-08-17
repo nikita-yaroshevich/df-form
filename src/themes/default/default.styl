@@ -1,6 +1,48 @@
-.df-form {
-	width: 100%;
-	df-input{
-		display: block;
-	}
+df-input, widget {
+  display: block;
 }
+
+df-field {
+  display: block;
+  height: 40px;
+  width: 100%
+  margin-right: -15px;
+  margin-left: -15px;
+  margin-bottom: 15px;
+
+  df-label {
+    width: 20%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .form-widget {
+    display: block;
+    width: 80%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
+
+df-error {
+  display: block;
+  color: red;
+  font: 14px / 1.2 'Lato', Helvetica, sans-serif;
+
+  .errors {
+    padding-left: 22%;
+    padding-top: 33px;
+    .error {
+      padding-top: 5px;
+    }
+  }
+}
+
+@import 'mixins'
+
+@import 'selectbox'

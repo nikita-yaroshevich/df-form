@@ -1,6 +1,250 @@
-.df-form {
+df-input,
+widget {
+  display: block;
+}
+df-field {
+  display: block;
+  height: 40px;
+  width: 100%;
+  margin-right: -15px;
+  margin-left: -15px;
+  margin-bottom: 15px;
+}
+df-field df-label {
+  width: 20%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+df-field .form-widget {
+  display: block;
+  width: 80%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+df-error {
+  display: block;
+  color: #f00;
+  font: 14px/1.2 'Lato', Helvetica, sans-serif;
+}
+df-error .errors {
+  padding-left: 22%;
+  padding-top: 33px;
+}
+df-error .errors .error {
+  padding-top: 5px;
+}
+.pp-selectbox {
+  outline: 0;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+/* dropdown */
+/* search */
+/* list */
+}
+.pp-selectbox.h-none .pp-selectbox__list {
+  max-height: none;
+}
+.pp-selectbox select-item {
+  display: block;
+}
+.pp-selectbox option-item {
+  display: block;
+  padding: 3px 3px 1px 11px;
+  border-bottom: 1px solid;
+  border-color: #000;
+  cursor: default;
+}
+.pp-selectbox option-item:hover {
+  background-color: #727f88;
+  color: #fff;
+  cursor: pointer;
+}
+.pp-selectbox__wrapper {
+  position: relative;
+  background-color: #fff;
+/* simple select */
+/* multiple select */
+}
+.pp-selectbox__wrapper.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.pp-selectbox__wrapper .item-selected {
+  padding: 8px 18px 7px 7px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  color: #fff;
+  background: #727f88;
+  font: 300 14px/1.2;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pp-selectbox__wrapper .arrow {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  margin-top: -8.5px;
+  font: 600 14px/1.2;
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.pp-selectbox__wrapper .tags-selected {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  min-height: 31px;
+  border-radius: 3px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.26);
+  background: transparent;
+  font-size: 0;
+  position: relative;
+}
+.pp-selectbox__wrapper .tags-selected:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.pp-selectbox__wrapper .tags-selected .placeholder {
+  display: block;
+  color: #757b81;
+  font-size: 14px;
+  position: absolute;
+  top: 7px;
+  left: 10px;
+}
+.pp-selectbox__wrapper .tags-selected .icon {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  color: #58595b;
+  font-size: 18px;
+}
+.pp-selectbox__wrapper .tags-selected .tag {
+  position: relative;
+  float: left;
+  margin: 3px;
+  padding: 3px 15px 3px 3px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  background: #727f88;
+  color: #fff;
+  font: 300 14px/1.2;
+  min-width: 70px;
+  max-width: 20%;
+  font-size: 14px;
+  text-align: left;
+  cursor: default;
+}
+.pp-selectbox__wrapper .tags-selected .tag-close {
+  position: absolute;
+  right: 3px;
+  top: 0;
+  cursor: pointer;
+}
+.pp-selectbox__wrapper .tags-selected .tag-close:hover {
+  color: #000;
+}
+.pp-selectbox__wrapper .tags-selected .tag-input input {
+  padding: 0 10px;
+  box-shadow: none;
+  background: transparent;
+  font: 300 14px/31px;
+  color: #000;
+}
+.pp-selectbox__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  min-width: 100%;
+  background: #f8f5f8;
+}
+.pp-selectbox__search {
+  margin: 0;
+  padding: 0;
   width: 100%;
 }
-.df-form df-input {
+.pp-selectbox__search input {
+  width: 100%;
+  height: 100%;
+  border: 1px solid;
+  border-color: #000;
+  border-radius: 7px;
+}
+.pp-selectbox__list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  min-width: 100%;
+  max-height: 120px;
+  overflow: auto;
+  box-sizing: border-box;
+  box-shadow: 0 3px 15px 5px rgba(0,0,0,0.1);
+}
+.pp-selectbox__list .sub .sub-item {
+  padding-left: 30px;
+}
+.pp-selectbox__list .sub .sub-title {
+  border-top: none;
+}
+.pp-selectbox__list .sub-item,
+.pp-selectbox__list .sub-title {
+  margin: 0;
+  padding: 0;
+  margin-top: 1px;
+  padding: 7px;
+/*border-top: #646464 solid 1px;*/
+  color: #000;
+  background: #efefef;
+  font: 300 14px/1.2;
+}
+.pp-selectbox__list .sub-title {
+  font-weight: bold;
+}
+.pp-selectbox__list .sub-item {
   display: block;
+  cursor: pointer;
+  padding-right: 24px;
+  white-space: nowrap;
+}
+.pp-selectbox__list .sub-item:first-child {
+/*border-top: none*/
+  position: relative;
+  overflow: hidden;
+  margin-top: 0;
+}
+.pp-selectbox__list .sub-item:first-child:after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 5%;
+  width: 90%;
+  height: 0;
+  box-shadow: 0 1px 10px 2px #969696;
+}
+.pp-selectbox__list .sub-item:first-child span {
+  position: relative;
+  z-index: 1;
+}
+.pp-selectbox__list .sub-item.selected,
+.pp-selectbox__list .sub-item:hover {
+  color: #fff;
+  background: #008ac0;
 }
